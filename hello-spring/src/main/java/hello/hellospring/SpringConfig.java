@@ -12,35 +12,26 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    /*
-    //spring이 제공하는 datasource
-    private DataSource dataSource;
+    //SpringJPA
+    //SpringJPA가 만들어놓은 구현체가 등록이 된다.
+    private final MemberRepository memberRepository;
 
-    //스프링부트에서 자체적으로 데이터 소스를 스프링 빈 등록. 이를 주입한다.
-    @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-    */
-
-    private EntityManager em;
-
-    @Autowired
-    public SpringConfig(EntityManager em) {
-        this.em = em;
+    @Autowired // 생성자가 1개이므로 생략가능
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService(){
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
 
-    @Bean
-    public MemberRepository memberRepository(){
-        //return new MemoryMemberRepository();
-        //return new JdbcMemberRepository(dataSource);
-        //return new JdbcTemplateMemberRepository(dataSource);
-        return new JpaMemberRepository(em);
-    }
+//    @Bean
+//    public MemberRepository memberRepository(){
+//        return new MemoryMemberRepository();
+//        return new JdbcMemberRepository(dataSource);
+//        return new JdbcTemplateMemberRepository(dataSource);
+//        return new JpaMemberRepository(em);
+//    }
 
 }
